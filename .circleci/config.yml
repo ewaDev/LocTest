@@ -6,7 +6,6 @@ orbs:
 jobs: 
   run-unit-tests:
     docker:
-      # specify the version you desire here
       - image: circleci/node:12.18.3
     working-directory:
 
