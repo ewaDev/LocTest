@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+
+jobs: 
+  run-unit-tests:
+    docker:
+      - image: circleci/node:12.18.3
+    working-directory:
+
+    description: "Run unit tests"
+    steps:
+      - checkout
+      - run: 
+          name: "Install Packages"
+          command: npm install 
+      - run: 
+          name: "Run Unit Tests"
+          command: npm run test    
+          working_directory: ./
+
+workflows:
+  main:
+    jobs:
+      - run-unit-tests:
+          filters:
+            branches:
+              only:
+                - /feature\/.*/
