@@ -1,11 +1,9 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@5.0.0
-
 jobs: 
   run-unit-tests:
     docker:
+      # specify the version you desire here
       - image: circleci/node:12.18.3
     working-directory:
 
@@ -23,8 +21,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - run-unit-tests:
-          filters:
-            branches:
-              only:
-                - /feature\/.*/
+      - run-unit-tests
