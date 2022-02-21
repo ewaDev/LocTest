@@ -6,7 +6,6 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:12.18.3
     working-directory:
-
     description: "Run unit tests"
     steps:
       - checkout
@@ -17,6 +16,16 @@ jobs:
           name: "Run Unit Tests"
           command: npm run test    
           working_directory: ./
+  deploy:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:12.18.3
+    working-directory:
+    description: "Run unit tests"
+    steps:
+      - run: 
+          name: "build"
+          command: echo "hello"         
 
 workflows:
   main:
