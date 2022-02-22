@@ -22,4 +22,8 @@ workflows:
           pkg-manager: npm
       - deploy-to-test: 
           requires: 
-            - node/test   
+            - node/test
+          filters:
+            branches:
+              only:  
+                - main            
