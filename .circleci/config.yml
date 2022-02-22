@@ -3,17 +3,35 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
 
+commands:  
+  build-and-deploy-app:
+    working-directory: 
+    parameters:
+     environment-name:
+        type: string
+    description: "Build for an eviroment"
+    steps: 
+       - run: 
+          name: "build"
+          command: echo "I havce built your software" <<parameters.environment-name>> 
+       - run: 
+          name: "deploy"
+          command: echo "I havce deployed your software to " <<parameters.environment-name>>        
+
 jobs: 
   deploy-to-test:
     docker:
       - image: circleci/node:12.18.3
-    working-directory:
-    description: "Build my product"
     steps:
-      - run: 
-          name: "build"
-          command: echo "I havce built your software"
-
+    - build-and-deploy-app:
+        environment-name: test 
+  deploy-to-live:
+    docker:
+      - image: circleci/node:12.18.3
+    steps:
+    - build-and-deploy-app:
+        environment-name: live       
+      
 workflows:
   LadiesOfCodeDemo:
     jobs:
@@ -26,4 +44,9 @@ workflows:
           filters:
             branches:
               only:  
-                - /main            
+                - /main
+      - deploy-to-live:
+          filters:
+            branches:
+              only:  
+              - /release\/.*/
