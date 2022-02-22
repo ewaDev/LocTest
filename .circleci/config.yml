@@ -3,9 +3,23 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
 
+jobs: 
+  deploy-to-test:
+    docker:
+      - image: circleci/node:12.18.3
+    working-directory:
+    description: "Build my product"
+    steps:
+      - run: 
+          name: "build"
+          command: echo "I havce built your software"
+
 workflows:
   LadiesOfCodeDemo:
     jobs:
       - node/test:
           version: '16.10'
           pkg-manager: npm
+      - deploy-to-test: 
+          requires: 
+            - node/test   
