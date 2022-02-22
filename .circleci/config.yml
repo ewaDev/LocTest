@@ -3,28 +3,50 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
 
+commands:  
+  build-and-deploy-app:
+    working-directory: 
+    parameters:
+     environment-name:
+        type: string
+    description: "Build for an eviroment"
+    steps: 
+       - run: 
+          name: "build"
+          command: echo "I havce built your software" <<parameters.environment-name>> 
+       - run: 
+          name: "deploy"
+          command: echo "I havce deployed your software to " <<parameters.environment-name>>        
+
 jobs: 
-  run-unit-tests:
+  deploy-to-test:
     docker:
       - image: circleci/node:12.18.3
-    working-directory:
-
-    description: "Run unit tests"
     steps:
-      - checkout
-      - run: 
-          name: "Install Packages"
-          command: npm install 
-      - run: 
-          name: "Run Unit Tests"
-          command: npm run test    
-          working_directory: ./
-
+    - build-and-deploy-app:
+        environment-name: test 
+  deploy-to-live:
+    docker:
+      - image: circleci/node:12.18.3
+    steps:
+    - build-and-deploy-app:
+        environment-name: live       
+      
 workflows:
-  main:
+  LadiesOfCodeDemo:
     jobs:
-      - run-unit-tests:
+      - node/test:
+          version: '16.10'
+          pkg-manager: npm
+      - deploy-to-test: 
+          requires: 
+            - node/test
           filters:
             branches:
-              only:
-                - /feature\/.*/
+              only:  
+                - /main
+      - deploy-to-live:
+          filters:
+            branches:
+              only:  
+              - /release\/.*/
