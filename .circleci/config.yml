@@ -38,6 +38,11 @@ workflows:
       - node/test:
           version: '16.10'
           pkg-manager: npm
+          filters:
+            branches:
+              only:  
+                - main
+                - feature/\/.*/
       - deploy-to-test: 
           requires: 
             - node/test
