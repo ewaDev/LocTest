@@ -1,21 +1,11 @@
 version: 2.1
 
-jobs:
-  run-unit-tests:
-    docker:
-       - image: circleci/node:12.18.3
-    description: "Run unit tests on branch"
-    steps:
-      - checkout
-      - run:
-          name: "Install dependencies"
-          command: npm install
-      - run:
-          name: "run tests"
-          command: npm run test
-          working_directory: ./
+orbs:
+  node: circleci/node@5.0.0
 
 workflows:
   LadiesOfCodeDemo:
     jobs:
-      - run-unit-tests
+      - node/test:
+          version: '16.10'
+          pkg-manager: npm
