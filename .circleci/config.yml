@@ -1,7 +1,20 @@
+
 version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
+
+jobs: 
+  deploy-to-test:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:12.18.3
+    working-directory:
+    description: "Build something"
+    steps:
+      - run: 
+          name: "build"
+          command: echo "I havce built your software" 
 
 
 workflows:
@@ -10,3 +23,7 @@ workflows:
       - node/test:
           version: '16.10'
           pkg-manager: npm
+
+      - deploy-to-test:
+          requires:
+            - node/test    
